@@ -1,6 +1,7 @@
 
 // Buffer to JSON
 function bufferReplacer (key, val) {
+  if (!val || !val.type || !val.data) return val; //can't be a buffer
   if (val.type !== 'Buffer') return val
   if (!Array.isArray(val.data)) return val
   val.data = val.data.length ? 'base64:' + new Buffer(val.data).toString('base64') : ''
@@ -9,6 +10,7 @@ function bufferReplacer (key, val) {
 
 // JSON to Buffer
 function bufferReviver (key, val) {
+  if (!val || !val.type || !val.data) return val; //can't be a buffer
   if (val.type !== 'Buffer') return val
   if (Array.isArray(val.data)) {
     return new Buffer(val.data)
